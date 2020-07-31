@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/UnivHighCharts",
+            "outputPath": "dist/UnivHighCharts/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -117,8 +117,59 @@
               "devServerTarget": "UnivHighCharts:serve:production"
             }
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/UnivHighCharts/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "UnivHighCharts:build",
+            "serverTarget": "UnivHighCharts:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "UnivHighCharts:build:production",
+              "serverTarget": "UnivHighCharts:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "UnivHighCharts:build:production",
+            "serverTarget": "UnivHighCharts:server:production",
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {}
+          }
         }
       }
-    }},
-  "defaultProject": "UnivHighCharts"
+    }
+  },
+  "defaultProject": "UnivHighCharts",
+  "cli": {
+    "analytics": "8266122d-b088-44ad-91d7-e03791ee6546"
+  }
 }
